@@ -1,3 +1,4 @@
+<!--
 <?xml version="1.0" encoding="UTF-8"?>
 
 <root>
@@ -8,3 +9,32 @@
 		<arab>137</arab>
 	</calc>
 </root>
+-->
+
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:output method="xml" indent="yes"/>
+
+    <!-- Template for handling arabic to roman conversion -->
+    <xsl:template match="arab">
+        <calc>
+            <arab><xsl:value-of select="."/></arab>
+            <roman><xsl:value-of select="user:arabic-to-roman(.)"/></roman>
+        </calc>
+    </xsl:template>
+
+    <!-- Template for other elements -->
+    <xsl:template match="@*|node()">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <!-- Function to convert Arabic to Roman -->
+    <xsl:function name="user:arabic-to-roman">
+        <xsl:param name="arabic"/>
+        <!-- Placeholder for the conversion logic -->
+        <xsl:value-of select="''"/> <!-- Placeholder for the conversion logic -->
+    </xsl:function>
+
+</xsl:stylesheet>

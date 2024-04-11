@@ -1,3 +1,4 @@
+<!--
 <?xml version="1.0" encoding="UTF-8"?>
 
 <root>
@@ -8,3 +9,68 @@
 		<roman>DCXI</roman>
 	</calc>
 </root>
+-->
+
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:output method="xml" indent="yes"/>
+
+    <!-- Template for handling roman to arabic conversion -->
+    <xsl:template match="roman">
+        <calc>
+            <roman><xsl:value-of select="."/></roman>
+            <arab><xsl:value-of select="user:roman-to-arabic(.)"/></arab>
+        </calc>
+    </xsl:template>
+
+    <!-- Template for handling arabic to roman conversion -->
+    <xsl:template match="arab">
+        <calc>
+            <arab><xsl:value-of select="."/></arab>
+            <roman><xsl:value-of select="user:arabic-to-roman(.)"/></roman>
+        </calc>
+    </xsl:template>
+
+    <!-- Template for other elements -->
+    <xsl:template match="@*|node()">
+        <xsl:copy>
+            <xsl:apply-templates select="@*|node()"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <!-- Function to convert Roman to Arabic -->
+    <xsl:function name="user:roman-to-arabic">
+        <xsl:param name="roman"/>
+        <!-- Placeholder for the conversion logic -->
+        <xsl:value-of select="sum(for $i in (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1) return count(contains($roman, user:get-roman($i))) * $i)"/>
+    </xsl:function>
+
+    <!-- Function to convert Arabic to Roman -->
+    <xsl:function name="user:arabic-to-roman">
+        <xsl:param name="arabic"/>
+        <!-- Placeholder for the conversion logic -->
+        <xsl:value-of select="''"/> <!-- Placeholder for the conversion logic -->
+    </xsl:function>
+
+    <!-- Function to get the Roman numeral representation for a given number -->
+    <xsl:function name="user:get-roman">
+        <xsl:param name="num"/>
+        <xsl:choose>
+            <xsl:when test="$num >= 1000">M</xsl:when>
+            <xsl:when test="$num >= 900">CM</xsl:when>
+            <xsl:when test="$num >= 500">D</xsl:when>
+            <xsl:when test="$num >= 400">CD</xsl:when>
+            <xsl:when test="$num >= 100">C</xsl:when>
+            <xsl:when test="$num >= 90">XC</xsl:when>
+            <xsl:when test="$num >= 50">L</xsl:when>
+            <xsl:when test="$num >= 40">XL</xsl:when>
+            <xsl:when test="$num >= 10">X</xsl:when>
+            <xsl:when test="$num >= 9">IX</xsl:when>
+            <xsl:when test="$num >= 5">V</xsl:when>
+            <xsl:when test="$num >= 4">IV</xsl:when>
+            <xsl:when test="$num >= 1">I</xsl:when>
+            <xsl:otherwise></xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
+</xsl:stylesheet>
